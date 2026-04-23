@@ -159,7 +159,7 @@ function App() {
           <div className="vazio">
             <h2>Comece um novo projeto</h2>
 
-            <button className="botaoPrincipal" onClick={adicionarQuadro}>
+            <button className="botaoGrande" onClick={adicionarQuadro}>
               + Novo Projeto
             </button>
           </div>
