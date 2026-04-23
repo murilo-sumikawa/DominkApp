@@ -1,0 +1,141 @@
+.pagina {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #0f172a;
+}
+
+/* card */
+
+.card {
+  position: relative;
+  width: 540px;
+  background: #1e293b;
+  padding: 50px 40px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  height: 227px;
+}
+
+/* topo */
+
+.topo {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* seta */
+
+.voltar {
+  position: absolute;
+  top: -30px;
+  left: -15px;
+  font-size: 32px;
+  color: white;
+  cursor: pointer;
+}
+
+.voltar:hover {
+  color: #22c55e;
+}
+
+/* titulo */
+
+.titulo {
+  margin: 0;
+  font-size: 35px;
+  text-align: center;
+  width: 100%;
+  color: #e2e8f0;
+}
+
+/* inputs */
+
+.card input {
+  width: 97%;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 15px;
+  color: white;
+  outline: none;
+}
+
+.card input:focus {
+  border-color: #6366f1;
+}
+
+/* input senha */
+
+.inputSenha {
+  position: relative;
+  width: 100%;
+}
+
+.icone {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #94a3b8;
+  font-size: 18px;
+}
+
+.icone:hover {
+  color: #22c55e;
+}
+
+/* botao */
+
+.card button {
+  background: #6366f1;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  width: 150px;
+  margin-left: 400px;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.card button:hover {
+  background: #1e9dc4;
+}
+
+.card button:hover:active {
+  transform: translateY(3px);
+}
+
+/* ações */
+
+.acoes {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.acoes a {
+  color: #94a3b8;
+  text-decoration: none;
+}
+
+.acoes a:hover {
+  color: #22c55e;
+}
+
+.acoes span:hover {
+  color: #22c55e;
+  cursor: pointer;
+}

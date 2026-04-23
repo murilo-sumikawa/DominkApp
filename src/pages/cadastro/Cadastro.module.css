@@ -1,0 +1,120 @@
+.container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #0f172a;
+}
+
+/* card */
+
+.card {
+  position: relative;
+  width: 640px;
+  background: #1e293b;
+  padding: 50px 40px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  height: 320px;
+}
+
+/* titulo */
+
+.card h2 {
+  text-align: center;
+  margin: 0 0 10px 0;
+  color: #e2e8f0;
+  font-size: 35px;
+}
+
+/* input padrao */
+
+.card input {
+  width: 97%;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 15px;
+  color: white;
+  outline: none;
+}
+
+.card input:focus {
+  border-color: #6366f1;
+}
+
+/* input senha */
+
+.inputSenha {
+  position: relative;
+  width: 100%;
+}
+
+/* icone */
+
+.inputSenha span {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #94a3b8;
+  font-size: 18px;
+}
+
+.inputSenha span:hover {
+  color: #22c55e;
+}
+
+/* validacao */
+
+.sucesso input {
+  border: 1px solid #22c55e;
+}
+
+.erro input {
+  border: 1px solid #ef4444;
+}
+
+/* botao */
+
+.card button {
+  background: #6366f1;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 16px;
+  width: 150px;
+  margin-left: 495px;
+  color: white;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.card button:hover {
+  background: #1e9dc4;
+}
+
+.card button:hover:active {
+  transform: translateY(3px);
+}
+
+/* seta */
+
+.voltar {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+}
+
+.voltar:hover {
+  color: #22c55e;
+}

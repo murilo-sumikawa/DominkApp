@@ -1,0 +1,28 @@
+/* area da barra */
+.area {
+  flex: 1;
+}
+
+/* trilho */
+.barra {
+  width: 100%;
+  height: 12px;
+  background: #0f172a;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 30px;
+}
+
+/* progresso */
+.progresso {
+  height: 100%;
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+}
+
+/* texto */
+.texto {
+  font-size: 15px;
+  color: #94a3b8;
+  text-align: right;
+  margin-top: 9px;
+}

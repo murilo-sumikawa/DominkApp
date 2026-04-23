@@ -1,0 +1,61 @@
+/* fundo */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+/* caixa */
+.modal {
+  background: #1e293b;
+  padding: 30px;
+  border-radius: 12px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* campos */
+.modal input,
+.modal textarea {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 10px;
+  color: white;
+}
+
+/* descricao */
+.modal textarea {
+  resize: none;
+  height: 100px;
+}
+
+/* acoes */
+.acoes {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* botao */
+.acoes button {
+  background: #6366f1;
+  border: none;
+  color: white;
+  width: 80px;
+  height: 30px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* numero sem setas */
+.modal input[type="number"]::-webkit-inner-spin-button,
+.modal input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
