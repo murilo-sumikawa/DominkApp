@@ -1,69 +1,241 @@
+/* =========================
+   BODY
+========================= */
+
 body {
   margin: 0;
   font-family: "Segoe UI", sans-serif;
-  background-color: #0f172a;
   color: #e2e8f0;
+
+  overflow-x: hidden;
+
+  background:
+  radial-gradient(circle at left center, #1e3a8a18, transparent 28%),
+  radial-gradient(circle at right center, #1e3a8a18, transparent 28%),
+  linear-gradient(
+    135deg,
+    #020617 0%,
+    #0f172a 40%,
+    #111827 100%
+  );
+
+  min-height: 100vh;
+
+  position: relative;
 }
+
+/* =========================
+   GRID DE FUNDO
+========================= */
+
+body::before {
+  content: "";
+
+  position: fixed;
+  inset: 0;
+
+  background-image:
+    linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+
+  background-size: 45px 45px;
+
+  mask-image: radial-gradient(circle, rgba(0,0,0,1), transparent 90%);
+
+  animation: gridMove 120s linear infinite;
+
+  pointer-events: none;
+
+  z-index: -2;
+}
+
+/* =========================
+   BRILHO PASSANDO
+========================= */
+
+body::after {
+  content: "";
+
+  position: fixed;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(99,102,241,0.08),
+      transparent
+    );
+
+  animation: shine 40s linear infinite;
+
+  pointer-events: none;
+
+  z-index: -1;
+}
+
+/* =========================
+   APP
+========================= */
 
 .app {
+  position: relative;
+
   padding: 100px 20px 20px 20px;
+
+  min-height: 100vh;
 }
 
-/* projetos */
+/* =========================
+   PROJETOS
+========================= */
 
 .projetos {
   display: flex;
   flex-direction: column;
   gap: 30px;
+
   margin-top: 70px;
 }
 
-/* sem projetos */
+/* =========================
+   SEM PROJETOS
+========================= */
 
 .vazio {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   margin-top: 120px;
+
   text-align: center;
 }
 
 .vazio h2 {
-  font-size: 40px;
   margin: 0;
+
+  font-size: 40px;
+  font-weight: 700;
+
+  letter-spacing: 1px;
 }
 
-/* botões */
+/* =========================
+   BOTÃO GRANDE
+========================= */
 
 .botaoGrande {
-  background: #6366f1;
-  border: none;
-  border-radius: 10px;
   width: 340px;
   height: 70px;
-  font-size: 20px;
-  color: white;
-  cursor: pointer;
+
   margin-top: 20px;
+
+  border: none;
+  border-radius: 14px;
+
+  cursor: pointer;
+
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6366f1,
+      #1e9dc4
+    );
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.35),
+    0 0 20px rgba(99,102,241,0.15);
+
+  transition:
+    transform 0.15s,
+    box-shadow 0.2s;
 }
 
 .botaoGrande:hover {
-  background: #1e9dc4;
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 15px 30px rgba(0,0,0,0.45),
+    0 0 25px rgba(30,157,196,0.25);
 }
 
+.botaoGrande:active {
+  transform: translateY(2px);
+}
+
+/* =========================
+   BOTÃO NOVO
+========================= */
+
 .botaoNovo {
-  padding: 10px;
-  background: #6366f1;
   width: 220px;
   height: 55px;
-  border: none;
+
   align-self: center;
-  border-radius: 8px;
-  color: white;
+
+  border: none;
+  border-radius: 12px;
+
   cursor: pointer;
+
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6366f1,
+      #1e9dc4
+    );
+
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.3),
+    0 0 18px rgba(99,102,241,0.15);
+
+  transition:
+    transform 0.15s,
+    box-shadow 0.2s;
 }
 
 .botaoNovo:hover {
-  background-color: #1e9dc4;
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 24px rgba(0,0,0,0.35),
+    0 0 22px rgba(30,157,196,0.25);
+}
+
+.botaoNovo:active {
+  transform: translateY(2px);
+}
+
+/* =========================
+   ANIMAÇÕES
+========================= */
+
+@keyframes gridMove {
+  0% {
+    transform: translateY(0px);
+  }
+
+  100% {
+    transform: translateY(45px);
+  }
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
 }

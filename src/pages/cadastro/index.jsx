@@ -15,6 +15,18 @@ function Cadastro() {
 
   return (
     <div className={styles.container}>
+      <div className={styles.particulas}>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
       <div className={styles.card}>
         {/* voltar */}
         <Link to="/login" className={styles.voltar}>

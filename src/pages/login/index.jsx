@@ -26,6 +26,18 @@ function Login() {
 
   return (
     <div className={styles.pagina}>
+      <div className={styles.particulas}>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
       <div className={styles.card}>
         {/* topo */}
         <div className={styles.topo}>
