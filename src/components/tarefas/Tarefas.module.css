@@ -5,8 +5,9 @@
   border-radius: 8px;
   position: relative;
   border: 1px solid #334155;
-  max-width: 300px;
+  max-width: 280px;
   overflow: visible;
+  max-height: 150px;
 }
 
 /* remover */
@@ -36,9 +37,9 @@
   background: #0f172a;
   border: 1px solid #334155;
   border-radius: 6px;
-  padding: 6px;
-  font-size: 13px;
-  max-height: 70px;
+  padding: 2px;
+  font-size: 17px;
+  max-height: 40px;
   overflow-y: auto;
   word-wrap: break-word;
   margin-top: 5px;
