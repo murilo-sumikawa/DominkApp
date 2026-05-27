@@ -13,16 +13,42 @@ function Login() {
   const [mostrarSenha, setMostrarSenha] = useState(false);
 
   // salvar usuario
-  function entrar() {
-    if (!usuario || !senha) {
-      alert("Preencha os campos");
+ async function entrar() {
+  if (!usuario || !senha) {
+    alert("Preencha os campos");
+    return;
+  }
+
+  try {
+    const resposta = await fetch("http://localhost:3000/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: usuario,
+        senha: senha
+      })
+    });
+
+    const dados = await resposta.json();
+
+    if (!resposta.ok) {
+      alert(dados.erro || "Erro ao fazer login");
       return;
     }
 
-    localStorage.setItem("usuario", usuario);
+    localStorage.setItem("token", dados.token);
+    localStorage.setItem("usuario", JSON.stringify(dados.usuario));
+
     navigate("/");
     window.location.reload();
+
+  } catch (error) {
+    alert("Erro ao conectar com a API");
+    console.log(error);
   }
+}
 
   return (
     <div className={styles.pagina}>

@@ -21,7 +21,7 @@ function Header({ usuario, menuAberto, setMenuAberto, sair }) {
               className={styles.nome}
               onClick={() => setMenuAberto(!menuAberto)}
             >
-              {usuario}
+              {usuario?.nome || usuario?.email || usuario}
             </div>
 
             {/* menu */}

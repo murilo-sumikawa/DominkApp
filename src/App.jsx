@@ -10,7 +10,10 @@ const colunas = ["Backlog", "To-Do", "Doing", "Done"];
 
 function App() {
   // usuario salvo
-  const [usuario, setUsuario] = useState(localStorage.getItem("usuario"));
+  const [usuario, setUsuario] = useState(() => {
+  const usuarioSalvo = localStorage.getItem("usuario");
+  return usuarioSalvo ? JSON.parse(usuarioSalvo) : null;
+});
 
   // estados
   const [menuAberto, setMenuAberto] = useState(false);
@@ -28,9 +31,10 @@ function App() {
 
   // sair
   function sair() {
-    localStorage.removeItem("usuario");
-    setUsuario(null);
-  }
+  localStorage.removeItem("usuario");
+  localStorage.removeItem("token");
+  setUsuario(null);
+}
 
   // nova tarefa
   function adicionarTarefa(nomeProjeto) {
