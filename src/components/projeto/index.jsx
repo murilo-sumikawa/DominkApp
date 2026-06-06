@@ -3,25 +3,31 @@ import Barra from "../barra";
 import styles from "./Projeto.module.css";
 
 function Projeto({ projeto, tarefas, colunas, removerProjeto, ...props }) {
-  // tarefas
-  const tarefasProjeto = tarefas.filter((t) => t.quadro === projeto.titulo);
+  const projetoId = projeto._id || projeto.id;
 
-  // pontos
+  // tarefas
+  const tarefasProjeto = tarefas.filter((tarefa) => {
+    const tarefaProjetoId = tarefa.projeto?._id || tarefa.projeto;
+
+    return tarefaProjetoId === projetoId;
+  });
+
+  // pontos totais
   const total = tarefasProjeto.reduce(
-    (acc, t) => acc + Number(t.pontos || 0),
+    (acc, tarefa) => acc + Number(tarefa.pontos || 0),
     0,
   );
 
-  // concluidos
+  //concluídos
   const concluidos = tarefasProjeto
-    .filter((t) => t.status === "Done")
-    .reduce((acc, t) => acc + Number(t.pontos || 0), 0);
+    .filter((tarefa) => tarefa.status === "Done")
+    .reduce((acc, tarefa) => acc + Number(tarefa.pontos || 0), 0);
 
   return (
     <div className={styles.projeto}>
       <button
         className={styles.remover}
-        onClick={() => removerProjeto(projeto.id)}
+        onClick={() => removerProjeto(projetoId)}
       >
         X
       </button>
@@ -39,7 +45,7 @@ function Projeto({ projeto, tarefas, colunas, removerProjeto, ...props }) {
             key={coluna}
             coluna={coluna}
             projeto={projeto}
-            tarefas={tarefas}
+            tarefas={tarefasProjeto}
             {...props}
           />
         ))}
