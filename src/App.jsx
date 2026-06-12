@@ -68,31 +68,31 @@ function App() {
   }, [projetos]);
   // nova tarefa
   async function adicionarTarefa(projeto) {
-    if (!titulo) {
-      return alert("Preencha o título");
-    }
+  if (!titulo) {
+    return alert("Preencha o título");
+  }
 
-    const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
-    try {
-      const resposta = await fetch(
-        `http://localhost:3000/tarefas/projeto/${projeto._id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            titulo,
-            descricao,
-            pontos: Number(pontos),
-            dataInicio: inicio,
-            dataPrazo: prazo,
-            status: colunaAtual,
-          }),
+  try {
+    const resposta = await fetch(
+      `http://localhost:3000/tarefas/projeto/${projeto._id}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-      );
+        body: JSON.stringify({
+          titulo,
+          descricao,
+          pontos: Number(pontos),
+          dataInicio: inicio,
+          dataPrazo: prazo,
+          status: colunaAtual,
+        }),
+      }
+    );
 
       const dados = await resposta.json();
 

@@ -15,16 +15,21 @@ function Colunas({
 
       {/* tarefas */}
       {tarefas
-        .filter((t) => t.status === coluna && t.quadro === projeto.titulo)
-        .map((tarefa) => (
-          <Tarefas key={tarefa.id} tarefa={tarefa} {...props} />
-        ))}
+        .filter((t) => {
+    const tarefaProjetoId = t.projeto?._id || t.projeto;
+    const projetoId = projeto._id || projeto.id;
+
+    return t.status === coluna && tarefaProjetoId === projetoId;
+  })
+  .map((tarefa) => (
+  <Tarefas key={tarefa.id} tarefa={tarefa} {...props} />
+    ))}
 
       {/* abrir modal */}
       <button
         className={styles.botao}
         onClick={() => {
-          setProjetoModal(projeto.titulo);
+          setProjetoModal(projeto);
           setColunaAtual(coluna);
         }}
       >
