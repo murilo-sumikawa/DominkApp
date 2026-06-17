@@ -1,7 +1,8 @@
 /* coluna */
 .coluna {
   flex: 1;
-  background: #0f172a;
+  background: var(--column-bg);
+  border: var(--column-border);
   padding: 15px;
   border-radius: 10px;
   display: flex;
@@ -12,18 +13,21 @@
 /* titulo */
 .titulo {
   font-weight: 600;
+  color: var(--text);
 }
 
 /* botao */
 .botao {
   margin-top: 5px;
-  background: #334155;
+  width: 500;
+  background: var(--card-btn-bg);
   border: none;
   padding: 8px;
   border-radius: 6px;
   height: 50px;
-  color: white;
+  color: var(--text);
   cursor: pointer;
+  border: var(--column-border);
 }
 
 .botao:hover {

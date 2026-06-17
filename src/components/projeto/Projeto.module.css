@@ -1,9 +1,14 @@
 /* projeto */
 .projeto {
-  background: #1e293b;
+  background: var(--project-bg);
+  border: 1px solid transparent;
   padding: 20px;
   border-radius: 12px;
   position: relative;
+}
+
+:global([data-theme="light"]) .projeto {
+  border: 2px solid #64748b;
 }
 
 /* topo */

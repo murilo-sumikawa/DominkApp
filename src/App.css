@@ -2,22 +2,85 @@
    BODY
 ========================= */
 
+:root {
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --bg-1: #020617;
+  --bg-2: #0f172a;
+  --bg-3: #111827;
+  --panel-bg: #1e293b;
+  --panel-alt: #0f172a;
+  --panel-border: #334155;
+  --accent-a: #6366f1;
+  --accent-b: #1e9dc4;
+  --accent-success: #22c55e;
+  --toggle-track: rgba(255, 255, 255, 0.08);
+  --toggle-knob: #6366f1;
+  --toggle-knob-dark: linear-gradient(135deg, #6366f1, #1e9dc4);
+  --toggle-icon: #ffffff;
+  --project-bg: #1e293b;
+  --column-bg: #0f172a;
+  --column-border: transparent;
+  --descri-border: 2px solid #a0a0a0;
+  --card-bg: #1e293b;
+  --card-border: #334155;
+  --card-desc-bg: #0f172a;
+  --card-btn-bg: #334155;
+  --scrollbar-bg: #1e293b;
+  --scrollbar-thumb: #2563eb;
+  --scrollbar-thumb-hover: #1d4ed8;
+  --modal-bg: #1e293b;
+  --modal-border: #334155;
+  --modal-desc-bg: #0f172a;
+  --grid-line: rgba(255, 255, 255, 0.045);
+  --shine: rgba(99, 102, 241, 0.08);
+}
+
+[data-theme="light"] {
+  --text: #0f172a;
+  --muted: #475569;
+  --bg-1: #f8fafc;
+  --bg-2: #eef2f7;
+  --bg-3: #e2e8f0;
+  --panel-bg: #ffffff;
+  --panel-alt: #f3f3f3;
+  --panel-border: #cbd5e1;
+  --accent-a: #6366f1;
+  --accent-b: #1e9dc4;
+  --accent-success: #22c55e;
+  --toggle-track: rgba(15, 23, 42, 0.1);
+  --toggle-knob: #1e9dc4;
+  --toggle-icon: #0f172a;
+  --toggle-knob-dark: linear-gradient(135deg, #6366f1, #1e9dc4);
+  --project-bg: #f1f5f9;
+  --column-bg: #ffffff;
+  --column-border: 2px solid #64748b;
+  --descri-border: 2px solid #64748b;
+  --card-bg: #ffffff;
+  --card-border: 2px solid #64748b;
+  --card-desc-bg: #f8fafc;
+  --card-btn-bg: #e2e8f0;
+  --scrollbar-bg: #ffffff;
+  --scrollbar-thumb: #6366f1;
+  --scrollbar-thumb-hover: #1e9dc4;
+  --modal-bg: #ffffff;
+  --modal-border: #cbd5e1;
+  --modal-desc-bg: #f8fafc;
+  --grid-line: rgba(15, 23, 42, 0.06);
+  --shine: rgba(99, 102, 241, 0.03);
+}
+
 body {
   margin: 0;
   font-family: "Segoe UI", sans-serif;
-  color: #e2e8f0;
+  color: var(--text);
 
   overflow-x: hidden;
 
   background:
-  radial-gradient(circle at left center, #1e3a8a18, transparent 28%),
-  radial-gradient(circle at right center, #1e3a8a18, transparent 28%),
-  linear-gradient(
-    135deg,
-    #020617 0%,
-    #0f172a 40%,
-    #111827 100%
-  );
+    radial-gradient(circle at left center, var(--bg-3), transparent 28%),
+    radial-gradient(circle at right center, var(--bg-3), transparent 28%),
+    linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 40%, var(--bg-3) 100%);
 
   min-height: 100vh;
 
@@ -35,12 +98,12 @@ body::before {
   inset: 0;
 
   background-image:
-    linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
 
   background-size: 45px 45px;
 
-  mask-image: radial-gradient(circle, rgba(0,0,0,1), transparent 90%);
+  mask-image: radial-gradient(circle, rgba(0, 0, 0, 1), transparent 90%);
 
   animation: gridMove 120s linear infinite;
 
@@ -59,13 +122,7 @@ body::after {
   position: fixed;
   inset: 0;
 
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(99,102,241,0.08),
-      transparent
-    );
+  background: linear-gradient(90deg, transparent, var(--shine), transparent);
 
   animation: shine 40s linear infinite;
 
@@ -141,16 +198,11 @@ body::after {
   font-size: 20px;
   font-weight: 600;
 
-  background:
-    linear-gradient(
-      135deg,
-      #6366f1,
-      #1e9dc4
-    );
+  background: linear-gradient(135deg, #6366f1, #1e9dc4);
 
   box-shadow:
-    0 10px 25px rgba(0,0,0,0.35),
-    0 0 20px rgba(99,102,241,0.15);
+    0 10px 25px rgba(0, 0, 0, 0.35),
+    0 0 20px rgba(99, 102, 241, 0.15);
 
   transition:
     transform 0.15s,
@@ -161,8 +213,8 @@ body::after {
   transform: translateY(-3px);
 
   box-shadow:
-    0 15px 30px rgba(0,0,0,0.45),
-    0 0 25px rgba(30,157,196,0.25);
+    0 15px 30px rgba(0, 0, 0, 0.45),
+    0 0 25px rgba(30, 157, 196, 0.25);
 }
 
 .botaoGrande:active {
@@ -180,6 +232,8 @@ body::after {
   align-self: center;
 
   border: none;
+  outline: none;
+
   border-radius: 12px;
 
   cursor: pointer;
@@ -188,12 +242,7 @@ body::after {
   font-size: 15px;
   font-weight: 600;
 
-  background:
-    linear-gradient(
-      135deg,
-      #6366f1,
-      #1e9dc4
-    );
+  background: linear-gradient(135deg, #6366f1, #1e9dc4);
 
   box-shadow:
     0 8px 20px rgba(0,0,0,0.3),
@@ -202,18 +251,25 @@ body::after {
   transition:
     transform 0.15s,
     box-shadow 0.2s;
+
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .botaoNovo:hover {
   transform: translateY(-2px);
 
   box-shadow:
-    0 12px 24px rgba(0,0,0,0.35),
-    0 0 22px rgba(30,157,196,0.25);
+    0 12px 24px rgba(0, 0, 0, 0.35),
+    0 0 22px rgba(30, 157, 196, 0.25);
 }
 
 .botaoNovo:active {
   transform: translateY(2px);
+}
+
+.botaoNovo:focus {
+  outline: none;
 }
 
 /* =========================
