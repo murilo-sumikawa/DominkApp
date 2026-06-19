@@ -1,11 +1,10 @@
 /* card */
 .card {
-  background: var(--card-bg);
+  background: #1e293b;
   padding: 12px;
   border-radius: 8px;
   position: relative;
-  border: var(--card-border);
-  color: #ffffff;
+  border: 1px solid #334155;
   max-width: 280px;
   overflow: visible;
   max-height: 150px;
@@ -29,45 +28,44 @@
 /* datas */
 .datas {
   font-size: 13px;
-  color: var(--text);
+  color: #94a3b8;
   margin-top: 10px;
 }
 
 /* descricao  */
 .descricao {
-  background: var(--card-desc-bg);
-  border: var(--descri-border);
+  background: #0f172a;
+  border: 1px solid #334155;
   border-radius: 6px;
   padding: 2px;
-  font-size: 13px;
+  font-size: 17px;
   max-height: 40px;
   overflow-y: auto;
   word-wrap: break-word;
   margin-top: 5px;
   height: 70px;
-  color: var(--text);
 }
 
 .descricao::-webkit-scrollbar,
 .modalDescricao::-webkit-scrollbar,
 .conteudo::-webkit-scrollbar {
   width: 8px;
-  background: var(--scrollbar-bg);
-  border-radius: 5px;
+  background: #1e293b;
 }
 
 .descricao::-webkit-scrollbar-thumb,
 .modalDescricao::-webkit-scrollbar-thumb,
 .conteudo::-webkit-scrollbar-thumb {
-  background: var(--scrollbar-thumb);
+  background: #2563eb;
   border-radius: 5px;
 }
 
 .descricao::-webkit-scrollbar-thumb:hover,
 .modalDescricao::-webkit-scrollbar-thumb:hover,
 .conteudo::-webkit-scrollbar-thumb:hover {
-  background: var(--scrollbar-thumb-hover);
+  background: #1d4ed8;
 }
+
 
 /* setas */
 .setas {
@@ -78,9 +76,9 @@
 
 /* botoes */
 .setas button {
-  background: var(--card-btn-bg);
+  background: #334155;
   border: none;
-  color: var(--text);
+  color: white;
   padding: 4px 8px;
   border-radius: 6px;
   cursor: pointer;
@@ -95,11 +93,6 @@
   font-size: 15px;
   font-weight: bold;
   margin: 0;
-}
-
-.titulo,
-.pontos {
-  color: var(--text);
 }
 
 .Container {
@@ -167,17 +160,16 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  border: 1px solid #334155;
 }
 
 .areaModal {
   width: 100%;
   height: 120px;
-  border: 2px solid #334155;
+  border: 1px solid #334155;
   border-radius: 8px;
   padding: 10px;
   background: #0f172a;
-  color: #e2e8f0;
+  color: white;
   font-size: 14px;
   resize: none;
   box-sizing: border-box;
@@ -189,7 +181,7 @@
 }
 
 .areaModal::-webkit-scrollbar-thumb {
-  background: #2563eb;
+  background: #2563eb; 
   border-radius: 4px;
 }
 
@@ -221,3 +213,5 @@
   align-items: center;
   margin-top: 10px;
 }
+
+

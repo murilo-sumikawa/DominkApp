@@ -1,13 +1,10 @@
 import { useState } from "react";
-
+import { useEffect } from "react";
 import "./App.css";
 
 import Header from "./components/header";
 import Projeto from "./components/projeto";
 import Modal from "./components/modal";
-import Aviso from "./components/aviso";
-import Inserir from "./components/inserir";
-import Inicio from "./inicio/Inicio";
 
 // colunas
 const colunas = ["Backlog", "To-Do", "Doing", "Done"];
@@ -16,112 +13,137 @@ function App() {
   // usuario salvo
   const [usuario, setUsuario] = useState(() => {
     const usuarioSalvo = localStorage.getItem("usuario");
-
     return usuarioSalvo ? JSON.parse(usuarioSalvo) : null;
   });
 
   // estados
   const [menuAberto, setMenuAberto] = useState(false);
-
   const [projetoModal, setProjetoModal] = useState(null);
-
   const [colunaAtual, setColunaAtual] = useState("Backlog");
-
-  // modal inserir projeto
-  const [modalProjeto, setModalProjeto] = useState(false);
-
-  // modal de início
-  const [inicioAberto, setInicioAberto] = useState(true);
-
-  // projetos
-  const [projetos, setProjetos] = useState([
-    {
-      id: 1,
-      titulo: "Projeto Principal",
-    },
-  ]);
-
-  // tarefas
+  const [projetos, setProjetos] = useState([]);
   const [tarefas, setTarefas] = useState([]);
-
-  // inputs tarefa
   const [titulo, setTitulo] = useState("");
-
   const [descricao, setDescricao] = useState("");
-
   const [pontos, setPontos] = useState("");
-
   const [inicio, setInicio] = useState("");
-
   const [prazo, setPrazo] = useState("");
 
-  // modal aviso
-  const [aviso, setAviso] = useState({
-    aberto: false,
-    mensagem: "",
-    acao: null,
-    cancelar: false,
-  });
-
-  // abrir aviso
-  function abrirAviso(mensagem, acao = null, cancelar = false) {
-    setAviso({
-      aberto: true,
-      mensagem,
-      acao,
-      cancelar,
-    });
-  }
-
-  // sair da conta
+  // sair
   function sair() {
     localStorage.removeItem("usuario");
     localStorage.removeItem("token");
-
     setUsuario(null);
   }
 
-  // adicionar tarefa
-  function adicionarTarefa(nomeProjeto) {
-    // valida titulo
-    if (!titulo) {
-      abrirAviso("Preencha o título");
+  //carregar tarefas
+  useEffect(() => {
+    async function carregarTarefas() {
+      const token = localStorage.getItem("token");
 
+      if (!token || projetos.length === 0) {
+        setTarefas([]);
+        return;
+      }
+
+      try {
+        const respostas = await Promise.all(
+          projetos.map((projeto) =>
+            fetch(`http://localhost:3000/tarefas/projeto/${projeto._id}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }).then((resposta) => resposta.json()),
+          ),
+        );
+
+        const todasTarefas = respostas.flat();
+
+        setTarefas(todasTarefas);
+      } catch (error) {
+        console.error("Erro ao carregar tarefas:", error);
+      }
+    }
+
+    carregarTarefas();
+  }, [projetos]);
+  // nova tarefa
+  async function adicionarTarefa(projeto) {
+  if (!titulo) {
+    return alert("Preencha o título");
+  }
+
+  const token = localStorage.getItem("token");
+
+  try {
+    const resposta = await fetch(
+      `http://localhost:3000/tarefas/projeto/${projeto._id}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          titulo,
+          descricao,
+          pontos: Number(pontos),
+          dataInicio: inicio,
+          dataPrazo: prazo,
+          status: colunaAtual,
+        }),
+      }
+    );
+
+      const dados = await resposta.json();
+
+      if (!resposta.ok) {
+        alert(dados.erro || "Erro ao criar tarefa");
+        return;
+      }
+
+      setTarefas([...tarefas, dados]);
+
+      setProjetoModal(null);
+      setTitulo("");
+      setDescricao("");
+      setPontos("");
+      setInicio("");
+      setPrazo("");
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao conectar com a API");
+    }
+  }
+async function editarTarefa(id, dadosAtualizados) {
+  const token = localStorage.getItem("token");
+
+  try {
+    const resposta = await fetch("http://localhost:3000/tarefas/" + id, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify(dadosAtualizados),
+    });
+
+    const dados = await resposta.json();
+
+    if (!resposta.ok) {
+      alert(dados.erro || "Erro ao editar tarefa");
       return;
     }
 
-    // nova tarefa
-    const tarefa = {
-      id: Date.now(),
-
-      titulo,
-
-      descricao,
-
-      pontos: Number(pontos),
-
-      dataInicio: inicio,
-
-      dataPrazo: prazo,
-
-      quadro: nomeProjeto,
-
-      status: colunaAtual,
-    };
-
-    // salvar tarefa
-    setTarefas([...tarefas, tarefa]);
-
-    // limpar modal
-    setProjetoModal(null);
-
-    setTitulo("");
-    setDescricao("");
-    setPontos("");
-    setInicio("");
-    setPrazo("");
+    setTarefas(
+      tarefas.map((tarefa) =>
+        (tarefa._id || tarefa.id) === id ? dados : tarefa
+      )
+    );
+  } catch (error) {
+    console.error("Erro ao editar tarefa:", error);
+    alert("Erro ao conectar com a API");
   }
-
+}
   // formatar data
   function formatarData(texto) {
     texto = texto.replace(/\D/g, "");
@@ -151,128 +173,232 @@ function App() {
   }
 
   // mover tarefa
-  function moverTarefa(id, direcao) {
+  async function moverTarefa(id, direcao) {
+    const tarefa = tarefas.find((item) => item._id === id || item.id === id);
+
+    if (!tarefa) {
+      return;
+    }
+
+    const indiceAtual = colunas.indexOf(tarefa.status);
+    const novoIndice =
+      direcao === "direita" ? indiceAtual + 1 : indiceAtual - 1;
+
+    if (novoIndice < 0 || novoIndice >= colunas.length) {
+      return;
+    }
+
+    const novoStatus = colunas[novoIndice];
+
+    const confirmarMovimento = confirm(
+      `Deseja mover a tarefa "${tarefa.titulo}" de "${tarefa.status}" para "${novoStatus}"?`,
+    );
+
+    if (!confirmarMovimento) {
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+
+    try {
+      const resposta = await fetch(
+        `http://localhost:3000/tarefas/${tarefa._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            status: novoStatus,
+          }),
+        },
+      );
+
+      const tarefaAtualizada = await resposta.json();
+
+      if (!resposta.ok) {
+        alert(tarefaAtualizada.erro || "Erro ao mover tarefa");
+        return;
+      }
+
+      setTarefas(
+        tarefas.map((item) =>
+          item._id === tarefa._id ? tarefaAtualizada : item,
+        ),
+      );
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao conectar com a API");
+    }
+  }
+
+  // apagar tarefa
+  async function removerTarefa(id) {
+    if (!confirm("Deseja remover essa tarefa?")) {
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+
+    try {
+      const resposta = await fetch(`http://localhost:3000/tarefas/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const dados = await resposta.json();
+
+      if (!resposta.ok) {
+        alert(dados.erro || "Erro ao remover tarefa");
+        return;
+      }
+
+      setTarefas(tarefas.filter((tarefa) => tarefa._id !== id));
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao conectar com a API");
+    }
+  }
+  
+    
+  // novo projeto
+  async function adicionarQuadro() {
+    const titulo = prompt("Nome do novo projeto:");
+
+    if (!titulo) {
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("Faça login para criar um projeto");
+      return;
+    }
+
+    try {
+      const resposta = await fetch("http://localhost:3000/projetos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          titulo,
+          descricao: "",
+        }),
+      });
+
+      const dados = await resposta.json();
+
+      if (!resposta.ok) {
+        alert(dados.erro || "Erro ao criar projeto");
+        return;
+      }
+
+      setProjetos([...projetos, dados]);
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao conectar com a API");
+    }
+  }
+  // apagar projeto
+async function removerProjeto(id) {
+  const confirmar = window.confirm("Deseja apagar este projeto?");
+
+  if (!confirmar) {
+    return;
+  }
+
+  const token = localStorage.getItem("token");
+
+  try {
+    const resposta = await fetch("http://localhost:3000/projetos/" + id, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+
+    const dados = await resposta.json();
+
+    if (!resposta.ok) {
+      alert(dados.erro || "Erro ao excluir projeto");
+      return;
+    }
+
+    setProjetos(
+      projetos.filter((projeto) => (projeto._id || projeto.id) !== id)
+    );
+
     setTarefas(
-      tarefas.map((t) => {
-        if (t.id === id) {
-          const i = colunas.indexOf(t.status);
+      tarefas.filter((tarefa) => {
+        const tarefaProjetoId = tarefa.projeto?._id || tarefa.projeto;
+        return tarefaProjetoId !== id;
+      })
+    );
+  } catch (error) {
+    console.error("Erro ao excluir projeto:", error);
+    alert("Erro ao conectar com a API");
+  }
+}
+  //carregar projetos
+  useEffect(() => {
+    async function carregarProjetos() {
+      const token = localStorage.getItem("token");
 
-          const novo = direcao === "direita" ? i + 1 : i - 1;
+      if (!token) {
+        setProjetos([]);
+        return;
+      }
 
-          // alterar coluna
-          if (novo >= 0 && novo < colunas.length) {
-            return {
-              ...t,
-              status: colunas[novo],
-            };
-          }
+      try {
+        const resposta = await fetch("http://localhost:3000/projetos", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const dados = await resposta.json();
+
+        if (!resposta.ok) {
+          console.error(dados.erro);
+          return;
         }
 
-        return t;
-      }),
-    );
-  }
+        setProjetos(dados);
+      } catch (error) {
+        console.error("Erro ao carregar projetos:", error);
+      }
+    }
 
-  // remover tarefa
-  function removerTarefa(id) {
-    abrirAviso(
-      "Deseja remover essa tarefa?",
-      () => {
-        setTarefas(tarefas.filter((t) => t.id !== id));
-      },
-      true,
-    );
-  }
-
-  // adicionar projeto
-  function adicionarProjeto(nome) {
-    setProjetos([
-      ...projetos,
-      {
-        id: Date.now(),
-        titulo: nome,
-      },
-    ]);
-  }
-
-  // remover projeto
-  function removerProjeto(id) {
-    abrirAviso(
-      "Deseja apagar este projeto?",
-      () => {
-        // projeto removido
-        const projetoRemovido = projetos.find((item) => item.id === id);
-
-        // remover projeto
-        setProjetos(projetos.filter((item) => item.id !== id));
-
-        // remover tarefas dele
-        setTarefas(tarefas.filter((t) => t.quadro !== projetoRemovido?.titulo));
-      },
-      true,
-    );
-  }
-
+    carregarProjetos();
+  }, []);
   return (
     <div className="app">
-      {/* modal aviso */}
-      <Aviso
-        aberto={aviso.aberto}
-        mensagem={aviso.mensagem}
-        mostrarCancelar={aviso.cancelar}
-        confirmar={() => {
-          // executa ação
-          if (aviso.acao) {
-            aviso.acao();
-          }
-
-          // fecha modal
-          setAviso({
-            aberto: false,
-            mensagem: "",
-            acao: null,
-            cancelar: false,
-          });
-        }}
-        cancelar={() =>
-          setAviso({
-            aberto: false,
-            mensagem: "",
-            acao: null,
-            cancelar: false,
-          })
-        }
-      />
-
-      {/* modal novo projeto */}
-      <Inserir
-        aberto={modalProjeto}
-        fechar={() => setModalProjeto(false)}
-        adicionarProjeto={adicionarProjeto}
-      />
-
       {/* topo */}
       <Header
         usuario={usuario}
         menuAberto={menuAberto}
         setMenuAberto={setMenuAberto}
         sair={sair}
-        abrirInicio={() => setInicioAberto(true)}
       />
 
-      <Inicio aberto={inicioAberto} fechar={() => setInicioAberto(false)} />
-
-      {/* projetos */}
       <div className="projetos">
+        {/* projetos */}
         {projetos.map((projeto) => (
           <Projeto
-            key={projeto.id}
+            key={projeto._id || projeto.id}
             projeto={projeto}
             tarefas={tarefas}
             colunas={colunas}
             removerProjeto={removerProjeto}
             moverTarefa={moverTarefa}
             removerTarefa={removerTarefa}
+            editarTarefa={editarTarefa}
             setProjetoModal={setProjetoModal}
             setColunaAtual={setColunaAtual}
           />
@@ -283,21 +409,18 @@ function App() {
           <div className="vazio">
             <h2>Comece um novo projeto</h2>
 
-            <button
-              className="botaoGrande"
-              onClick={() => setModalProjeto(true)}
-            >
+            <button className="botaoGrande" onClick={adicionarQuadro}>
               + Novo Projeto
             </button>
           </div>
         ) : (
-          <button className="botaoNovo" onClick={() => setModalProjeto(true)}>
+          <button className="botaoNovo" onClick={adicionarQuadro}>
             + Novo Projeto
           </button>
         )}
       </div>
 
-      {/* modal tarefa */}
+      {/* modal */}
       <Modal
         projeto={projetoModal}
         setProjeto={setProjetoModal}
