@@ -1,6 +1,6 @@
 /* header fixo */
 .header {
-  background-color: #1e293b;
+  background-color: var(--panel-alt);
   width: 100%;
   height: 110px;
   display: flex;
@@ -10,6 +10,11 @@
   top: 0;
   left: 0;
   z-index: 1000;
+  border-bottom: 1px solid transparent;
+}
+
+:global([data-theme="light"]) .header {
+  border-bottom: 2px solid #000000;
 }
 
 /* nome */
@@ -17,6 +22,15 @@
   margin: 0;
   font-size: 45px;
   margin-top: 9px;
+  color: var(--text);
+}
+
+.logo {
+  cursor: pointer;
+}
+
+.logo:hover {
+  color: #22c55e;
 }
 
 /* area de login */
@@ -25,16 +39,18 @@
   right: 20px;
   top: 61%;
   transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
 /* link login */
 .linkLogin {
-  margin-right: 12px;
   cursor: pointer;
   font-weight: 500;
   font-size: 25px;
   text-decoration: none;
-  color: #e2e8f0;
+  color: var(--text);
 }
 
 .linkLogin:hover {
@@ -51,6 +67,7 @@
   cursor: pointer;
   font-weight: 600;
   font-size: 21px;
+  color: var(--text);
 }
 
 /* menu da conta */

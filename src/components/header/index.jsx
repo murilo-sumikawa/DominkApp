@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import styles from "./Header.module.css";
+import Temas from "../temas";
 
 function Header({ usuario, menuAberto, setMenuAberto, sair }) {
   return (
@@ -7,6 +8,7 @@ function Header({ usuario, menuAberto, setMenuAberto, sair }) {
       <h1>Domínk</h1>
 
       <div className={styles.login}>
+        <Temas />
         {/* sem login */}
         {!usuario && (
           <Link className={styles.linkLogin} to="/login">
