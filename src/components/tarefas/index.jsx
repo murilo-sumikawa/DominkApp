@@ -2,23 +2,26 @@ import { useState } from "react";
 import { FaPencilAlt } from "react-icons/fa";
 import styles from "./Tarefas.module.css";
 
-function Tarefas({ tarefa, moverTarefa, removerTarefa }) {
+function Tarefas({ tarefa, moverTarefa, removerTarefa, editarTarefa }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [descricaoEditada, setDescricaoEditada] = useState(tarefa.descricao);
 
   const abrirModal = () => setIsModalOpen(true);
   const fecharModal = () => setIsModalOpen(false);
   const salvarDescricao = () => {
-    tarefa.descricao = descricaoEditada; // Atualiza a descrição da tarefa
-    fecharModal();
-  };
+  editarTarefa(tarefa._id || tarefa.id, {
+    descricao: descricaoEditada,
+  });
+
+  fecharModal();
+};
 
   return (
     <div className={styles.card}>
       {/* botão de remover */}
       <button
         className={styles.remover}
-        onClick={() => removerTarefa(tarefa.id)}
+        onClick={() => removerTarefa(tarefa._id || tarefa.id)}
       >
         X
       </button>
@@ -63,8 +66,8 @@ function Tarefas({ tarefa, moverTarefa, removerTarefa }) {
 
       {/* mover */}
       <div className={styles.setas}>
-        <button onClick={() => moverTarefa(tarefa.id, "esquerda")}>◀</button>
-        <button onClick={() => moverTarefa(tarefa.id, "direita")}>▶</button>
+        <button onClick={() => moverTarefa(tarefa._id || tarefa.id, "esquerda")}>◀</button>
+        <button onClick={() => moverTarefa(tarefa._id || tarefa.id, "direita")}>▶</button>
       </div>
     </div>
   );

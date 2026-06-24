@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaArrowCircleLeft, FaEye, FaEyeSlash } from "react-icons/fa";
 import styles from "./Cadastro.module.css";
+import Aviso from "../../components/aviso";
 
 function Cadastro() {
   const navigate = useNavigate();
@@ -12,18 +13,42 @@ function Cadastro() {
   const [confirmar, setConfirmar] = useState("");
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [mostrarConfirmar, setMostrarConfirmar] = useState(false);
+  const [aviso, setAviso] = useState({
+    aberto: false,
+    mensagem: "",
+    acao: null,
+    cancelar: false,
+  });
+//avisos
+function abrirAviso(mensagem, acao = null, cancelar = false) {
+  setAviso({
+    aberto: true,
+    mensagem: mensagem,
+    acao: acao,
+    cancelar: cancelar,
+  });
+}
+
+  function fecharAviso() {
+    setAviso({
+      aberto: false,
+      mensagem: "",
+      acao: null,
+      cancelar: false,
+    });
+  }
 
   // validar senhas
   const senhasIguais = senha && confirmar && senha === confirmar;
 
   async function cadastrar() {
     if (!email || !nome || !senha || !confirmar) {
-      alert("Preencha todos os campos");
+      abrirAviso("Preencha todos os campos");
       return;
     }
 
     if (senha !== confirmar) {
-      alert("As senhas não coincidem");
+      abrirAviso("As senhas não coincidem");
       return;
     }
 
@@ -43,95 +68,116 @@ function Cadastro() {
       const dados = await resposta.json();
 
       if (!resposta.ok) {
-        alert(dados.erro || "Erro ao cadastrar usuário");
+        abrirAviso(dados.erro || "Erro ao cadastrar usuário");
         return;
       }
 
-      alert("Conta criada com sucesso!");
-      navigate("/login");
+      abrirAviso("Conta cadastrada com sucesso", () => navigate("/login"));
     } catch (error) {
       console.error(error);
-      alert("Erro ao conectar com a API");
+      abrirAviso("Erro ao conectar com a API");
     }
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.particulas}>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-      <div className={styles.card}>
-        {/* voltar */}
-        <Link to="/login" className={styles.voltar}>
-          <FaArrowCircleLeft />
-        </Link>
+    <>
+      <Aviso
+        aberto={aviso.aberto}
+        mensagem={aviso.mensagem}
+        mostrarCancelar={false}
+         confirmar={() => {
+    const acao = aviso.acao;
 
-        <h2>Criar conta</h2>
+    setAviso({
+      aberto: false,
+      mensagem: "",
+      acao: null,
+      cancelar: false,
+    });
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+    if (acao) {
+      acao();
+    }
+  }}
+  cancelar={fecharAviso}
+      />
+      <div className={styles.container}>
+        <div className={styles.particulas}>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div className={styles.card}>
+          {/* voltar */}
+          <Link to="/login" className={styles.voltar}>
+            <FaArrowCircleLeft />
+          </Link>
 
-        <input
-          type="text"
-          placeholder="Nome de usuário"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-        />
+          <h2>Criar conta</h2>
 
-        {/* senha */}
-        <div
-          className={`${styles.inputSenha} 
-          ${confirmar ? (senhasIguais ? styles.sucesso : styles.erro) : ""}
-        `}
-        >
           <input
-            type={mostrarSenha ? "text" : "password"}
-            placeholder="Senha"
-            maxLength={15}
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
 
-          <span onClick={() => setMostrarSenha(!mostrarSenha)}>
-            {mostrarSenha ? <FaEyeSlash /> : <FaEye />}
-          </span>
-        </div>
-
-        {/* confirmar */}
-        <div
-          className={`${styles.inputSenha} 
-          ${confirmar ? (senhasIguais ? styles.sucesso : styles.erro) : ""}
-        `}
-        >
           <input
-            type={mostrarConfirmar ? "text" : "password"}
-            placeholder="Confirmar senha"
-            maxLength={15}
-            value={confirmar}
-            onChange={(e) => setConfirmar(e.target.value)}
+            type="text"
+            placeholder="Nome de usuário"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
           />
 
-          <span onClick={() => setMostrarConfirmar(!mostrarConfirmar)}>
-            {mostrarConfirmar ? <FaEyeSlash /> : <FaEye />}
-          </span>
-        </div>
+          {/* senha */}
+          <div
+            className={`${styles.inputSenha} 
+          ${confirmar ? (senhasIguais ? styles.sucesso : styles.erro) : ""}
+        `}
+          >
+            <input
+              type={mostrarSenha ? "text" : "password"}
+              placeholder="Senha"
+              maxLength={15}
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+            />
 
-        <button onClick={cadastrar}>Cadastrar</button>
+            <span onClick={() => setMostrarSenha(!mostrarSenha)}>
+              {mostrarSenha ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
+
+          {/* confirmar */}
+          <div
+            className={`${styles.inputSenha} 
+          ${confirmar ? (senhasIguais ? styles.sucesso : styles.erro) : ""}
+        `}
+          >
+            <input
+              type={mostrarConfirmar ? "text" : "password"}
+              placeholder="Confirmar senha"
+              maxLength={15}
+              value={confirmar}
+              onChange={(e) => setConfirmar(e.target.value)}
+            />
+
+            <span onClick={() => setMostrarConfirmar(!mostrarConfirmar)}>
+              {mostrarConfirmar ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
+
+          <button onClick={cadastrar}>Cadastrar</button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

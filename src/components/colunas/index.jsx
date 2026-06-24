@@ -22,7 +22,7 @@ function Colunas({
     return t.status === coluna && tarefaProjetoId === projetoId;
   })
   .map((tarefa) => (
-  <Tarefas key={tarefa.id} tarefa={tarefa} {...props} />
+  <Tarefas key={tarefa._id||tarefa.id} tarefa={tarefa} {...props} />
     ))}
 
       {/* abrir modal */}

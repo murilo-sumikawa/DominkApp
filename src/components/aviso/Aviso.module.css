@@ -1,0 +1,77 @@
+.overlay{
+  position:fixed;
+  inset:0;
+
+  background:rgba(0,0,0,0.75);
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  z-index:99999;
+}
+
+.modal{
+  width:350px;
+
+  background:#1e293b;
+
+  border:1px solid #334155;
+  border-radius:12px;
+
+  padding:25px;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:20px;
+
+  box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+.modal h3{
+  margin:0;
+
+  color:#e2e8f0;
+  font-size:20px;
+  font-weight:500;
+
+  text-align:center;
+}
+
+.botoes{
+  display:flex;
+  gap:10px;
+}
+
+.confirmar,
+.cancelar{
+  border:none;
+  border-radius:8px;
+
+  width:120px;
+  height:40px;
+
+  color:white;
+  font-size:15px;
+
+  cursor:pointer;
+
+  transition:0.15s;
+}
+
+.confirmar{
+  background:#6366f1;
+}
+
+.confirmar:hover{
+  background:#1e9dc4;
+}
+
+.cancelar{
+  background:#ef4444;
+}
+
+.cancelar:hover{
+  background:#dc2626;
+}
