@@ -41,3 +41,9 @@ Funcionalidades:
 -Remoção de Tarefas
 
 -Remoção de Projetos
+
+ Instalação:
+
+ -npm install
+
+ -npm run dev
